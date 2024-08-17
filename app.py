@@ -16,7 +16,7 @@ submit = st.button("Submit")
 if submit:
     try:
         # Load Model
-        model = pickle.load(open('model_rf.pkl', 'rb'))
+        model = pickle.load(open('model1.pkl', 'rb'))
         
         # Process Input
         input_df_split = input_df.split(',')
