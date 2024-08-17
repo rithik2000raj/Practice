@@ -6,7 +6,8 @@ from PIL import Image
 
 # Title and Image
 st.title("Credit Card Fraud Detection Model")
-st.image("images.jpg")
+image = Image.open("images.jpg")
+st.image(image)
 
 # User Input
 input_df = st.text_input("Please provide all the required feature details, separated by commas:")
@@ -16,7 +17,8 @@ submit = st.button("Submit")
 if submit:
     try:
         # Load Model
-        model = pickle.load(open('model1.pkl', 'rb'))
+        with open('model_rf.pkl', 'rb') as model_file:
+            model = pickle.load(model_file)
         
         # Process Input
         input_df_split = input_df.split(',')
@@ -31,18 +33,13 @@ if submit:
             prediction = model.predict(features.reshape(1, -1))
 
             # Output Result
-             if prediction[0] == 0:
+            if prediction[0] == 0:
                 st.write("Legitimate Transaction")
             else:
                 st.write("Fraudulent Transaction")
     except ValueError as ve:
         st.error(f"Input error: {str(ve)}. Please ensure all features are numeric and formatted correctly.")
+    except FileNotFoundError:
+        st.error("Model file not found. Please ensure 'model_rf.pkl' is in the correct directory.")
     except Exception as e:
-        st.error(f"An error occurred: {str(e)}")
-
-
-
-
-
-
-
+        st.error(f"An error occurred: {str(e)}")
